@@ -16,9 +16,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_java);
+        setContentView(R.layout.activity_court);
 
-        display(quantity);
+        //display(quantity);
     }
     public void submitOrder(View view){
         int price = quantity*5;
@@ -51,6 +51,51 @@ public class MainActivity extends AppCompatActivity {
         if(quantity < 0) quantity = 0;
         display(quantity);
     }
+    int team1Score = 0;
+    int team2Score = 0;
+    public void resetScores(View view){
+        team1Score = 0;
+        team2Score = 0;
+        displayTeamScores(1);
+        displayTeamScores(2);
+    }
+    public void displayTeamScores(int team){
+        switch(team){
+            case 1:
+                TextView Team1_Score = (TextView)findViewById(R.id.Team1Score);
+                Team1_Score.setText("" + team1Score);
+                break;
+            case 2:
+                TextView Team2_Score = (TextView)findViewById(R.id.Team2Score);
+                Team2_Score.setText("" + team2Score);
+                break;
+        }
+    }
+    public void score3PtsTeam1(View view){
+        team1Score += 3;
+        displayTeamScores(1);
+    }
+    public void Team1_2points(View view){
+        team1Score += 2;
+        displayTeamScores(1);
+    }
+    public void Team1_1points(View view){
+        team1Score += 1;
+        displayTeamScores(1);
+    }
+    public void Team2_3points(View view){
+        team2Score += 3;
+        displayTeamScores(2);
+    }
+    public void Team2_2points(View view){
+        team2Score += 2;
+        displayTeamScores(2);
+    }
+    public void Team2_1points(View view){
+        team2Score += 1;
+        displayTeamScores(2);
+    }
+
 } // end MainActivity
 /*
     @Override
