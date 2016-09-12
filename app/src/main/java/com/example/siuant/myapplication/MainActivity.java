@@ -12,44 +12,65 @@ import android.widget.TextView;
 import java.text.NumberFormat;
 
 public class MainActivity extends AppCompatActivity {
-    int quantity = 3;
+    int quantity = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_court);
+        setContentView(R.layout.activity_java);
 
-        //display(quantity);
+        displayQuantity(quantity);
     }
     public void submitOrder(View view){
         int price = quantity*5;
         //displayPrice(quantity*5);
-        displayMessage("Total: $" + price + "\nThank you!");
+        price = calculatePrice();
+        String orderSummary = createOrderSummary(price);
+        //displayMessage("Total: $" + price + "\nThank you!");
+        displayMessage(orderSummary);
+
+        //calculatePrice(quantity);
+        //calculatePrice(quantity, 10);
+    }
+    private String createOrderSummary(int price){
+        return "Name: Kaptain Kunal\nQuantity: " + quantity + "\nTotal: $ " + price + "\nThank you!";
     }
 
-    public void display(int num){
+    private int calculatePrice(int quantity){
+        int price = quantity * 5;
+        return price;
+    }
+    private int calculatePrice(int quantity, int pricePerCup){
+        int price = quantity * pricePerCup;
+        return price;
+    }
+    private int calculatePrice(){
+        int price = quantity * 5;
+        return price;
+    }
+    public void displayQuantity(int number){
         TextView quantityTextView = (TextView)findViewById(R.id.quantity_text_view);
-        quantityTextView.setText("" + num);
+        quantityTextView.setText("" + number);
     }
 
     public void displayPrice(int number){
-        TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+        //TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
+        //priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
     }
 
     public void displayMessage(String message){
-        TextView priceTextView = (TextView)findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
+        TextView orderSummaryTextView = (TextView)findViewById(R.id.order_summary_text_value);
+        orderSummaryTextView.setText(message);
     }
 
     public void increment(View view){
         quantity++;
-        display(quantity);
+        displayQuantity(quantity);
     }
 
     public void decrement(View view){
         quantity--;
         if(quantity < 0) quantity = 0;
-        display(quantity);
+        displayQuantity(quantity);
     }
     int team1Score = 0;
     int team2Score = 0;
