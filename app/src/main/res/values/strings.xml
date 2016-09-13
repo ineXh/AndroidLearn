@@ -1,5 +1,13 @@
-<resources>
+<resources xmlns:xliff="http://schemas.android.com/tools">
     <string name="app_name">Court Counter</string>
     <string name="person_name">Bob</string>
     <string name="birthday">Happy Birthday</string>
+    <!-- Header text for the list of toppings [CHAR LIMIT = 20] -->
+    <string name="toppings">Toppings</string>
+    <string name="thank_you">Thank you!</string>
+
+    <!-- Name for the order summary. It will be shown in the format of "Name: Amy" where Amy is the
+         user's name. [CHAR LIMIT = NONE] -->
+    <string name="order_summary_name">Name: <xliff:g id="name" example="Amy">%s</xliff:g></string>
+
 </resources>

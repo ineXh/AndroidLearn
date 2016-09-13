@@ -1,10 +1,18 @@
 package com.example.siuant.myapplication;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -16,23 +24,85 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*TextView textView = new TextView(this);
+        textView.setText("Hey.");
+        textView.setTextColor(Color.RED);
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+
+        setContentView(textView);*/
         setContentView(R.layout.activity_java);
+        //setContentView(R.layout.activity_cookie);
 
         displayQuantity(quantity);
     }
+
+    public void eatCookie(View view){
+        TextView textView = (TextView) findViewById(R.id.cookieText);
+        textView.setText("I'm so full");
+        ImageView imageView = (ImageView) findViewById(R.id.cookieImage);
+        imageView.setImageResource(R.drawable.after_cookie);
+
+    }
+
     public void submitOrder(View view){
+        /*Intent intent = new Intent(Intent.ACTION_VIEW);
+        //intent.setData(geoLocation);
+        intent.setData(Uri.parse("geo:47.6, -122.3"));
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        }*/
         int price = quantity*5;
         //displayPrice(quantity*5);
         price = calculatePrice();
-        String orderSummary = createOrderSummary(price);
+
+        EditText nameEditText = (EditText)findViewById(R.id.editNameText);
+        String name = nameEditText.getText().toString();
+
+        String orderSummary = createOrderSummary(price, name);
         //displayMessage("Total: $" + price + "\nThank you!");
-        displayMessage(orderSummary);
+        //displayMessage(orderSummary);
+
+        emailOrder(orderSummary, name);
 
         //calculatePrice(quantity);
         //calculatePrice(quantity, 10);
     }
-    private String createOrderSummary(int price){
-        return "Name: Kaptain Kunal\nQuantity: " + quantity + "\nTotal: $ " + price + "\nThank you!";
+    private String createOrderSummary(int price, String name){
+
+        CheckBox creamCheckBox = (CheckBox)findViewById(R.id.creamCheckBox);
+        boolean creamChecked = creamCheckBox.isChecked();
+        Log.v("MainActivity", "The price is " + price);
+        CheckBox chocolateCheckBox = (CheckBox)findViewById(R.id.chocolateCheckBox);
+        boolean chocolateChecked = chocolateCheckBox.isChecked();
+
+        if(creamChecked) price += 1*quantity;
+        if(chocolateChecked) price += 2*quantity;
+
+        //String strChecked = (creamChecked) ? "true" : "false";
+        //String order = "Name: " + name + "\nQuantity: " + quantity + "\n";
+        String order = getString(R.string.order_summary_name, name) + "\n";
+        order += "Add Whipped Cream? " + creamChecked + "\n";
+        order += "Add Chocolate? " + chocolateChecked + "\n";
+        order += "Total: $ " + price + "\n" + getString(R.string.thank_you);
+        return order;
+    }
+    private void emailOrder(String order, String name){
+        Intent intent = new Intent(Intent.ACTION_SEND );
+        /*intent.addCategory(Intent.CATEGORY_APP_EMAIL);
+        intent.putExtra(Intent.EXTRA_EMAIL, "");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "JustJava order for " + name);
+        intent.putExtra(Intent.EXTRA_TEXT, order);*/
+        intent.setData(Uri.parse("mailto:"));
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_EMAIL  , "");
+        intent.putExtra(Intent.EXTRA_SUBJECT, "JustJava order for " + name);
+        intent.putExtra(Intent.EXTRA_TEXT   , order);
+
+        if(intent.resolveActivity(getPackageManager()) != null){
+            startActivity(intent);
+        }
+        //startActivity(Intent.createChooser(intent, "Send Email"));
     }
 
     private int calculatePrice(int quantity){
@@ -64,6 +134,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void increment(View view){
         quantity++;
+        if(quantity > 100) quantity = 100;
         displayQuantity(quantity);
     }
 
